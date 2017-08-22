@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-//import {bindActionCreators} from 'redux';
 import { signIn, signOut } from '../../redux/modules/auth';
 import {Route, Redirect, withRouter} from 'react-router-native';
 
@@ -50,7 +49,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 Auth.propTypes = propTypes;
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Auth));
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Auth));

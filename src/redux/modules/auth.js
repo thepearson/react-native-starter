@@ -5,31 +5,37 @@ const AUTH_SIGNOUT = 'app/auth/signout';
 /* Action creators */
 export function signIn(cb) {
   return (dispatch, getState) => {
-    setTimeout(() => {
-      dispatch({
-        type: AUTH_SIGNIN,
-        payload: {}
-      });
 
-      if (cb) {
-        cb();
-      }
-    }, 1000); // fake async
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(function(user) {
+        console.warn(user);
+      })
+      .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+
+    if (cb) {
+      cb();
+    }
   };
 }
 
 export function signOut(cb) {
   return (dispatch, getState) => {
     setTimeout(() => {
+      console.warn('Signed out');
       dispatch({
         type: AUTH_SIGNOUT,
         payload: {}
       });
-
-      if (cb) {
-        cb();
-      }
     }, 1000); // fake async
+
+    if (cb) {
+      cb();
+    }
   };
 }
 
