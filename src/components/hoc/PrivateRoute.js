@@ -1,32 +1,28 @@
-import React, {Component, PropTypes} from 'react';
-import {Route, Redirect} from 'react-router-native';
+import React, {Component} from 'react';
+import {Route, Redirect, withRouter} from 'react-router-native';
 import { connect } from 'react-redux';
-
-const propTypes = {
-};
 
 class PrivateRoute extends Component {
   render() {
-    const {authenticated, location, Component, ...rest} = this.props;
-    return (
-      authenticated ? (<Component {...rest} authenticated={authenticated} />) : (
-        <Redirect to={{pathname: '/auth', state: {from: location}}}/>)
-    );
+    const {authenticated, component: Component, ...rest} = this.props;
+    return (<Route {...rest} render={(props) => {
+      if (authenticated) {
+        return (<Component {...props} />);
+      }
+      else {
+        return <Redirect to={{
+          pathname: '/signup',
+          state: { from: props.location }
+        }}/>
+      }
+    }}/>);
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     authenticated: state.auth.authenticated
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-PrivateRoute.propTypes = propTypes;
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PrivateRoute);
+export default withRouter(connect(mapStateToProps)(PrivateRoute));
